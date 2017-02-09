@@ -255,6 +255,7 @@ module Makara
     # use the config parser to generate a master and slave pool
     def instantiate_connections
       @master_pool = Makara::Pool.new('master', self)
+      $master_pool = @master_pool
       @config_parser.master_configs.each do |master_config|
         @master_pool.add master_config.merge(@config_parser.makara_config) do
           graceful_connection_for(master_config)
@@ -262,6 +263,7 @@ module Makara
       end
 
       @slave_pool = Makara::Pool.new('slave', self)
+      $slave_pool = @slave_pool
       @config_parser.slave_configs.each do |slave_config|
         @slave_pool.add slave_config.merge(@config_parser.makara_config) do
           graceful_connection_for(slave_config)
